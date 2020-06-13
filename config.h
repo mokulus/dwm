@@ -34,7 +34,7 @@ static const Rule rules[] = {
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -57,7 +57,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "/bin/sh", "-c", "$TERMINAL", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -94,8 +94,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
         { MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {0} }, /* quit */
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {1} }, /* refresh */
-	{ MODKEY,			XK_minus,	 spawn,		SHCMD("pamixer --allow-boost -d 5; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
-	{ MODKEY,			XK_equal,	 spawn,		SHCMD("pamixer --allow-boost -i 5; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
+	{ MODKEY,			XK_minus,	 spawn,		SHCMD("amixer sset Master 5%-; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
+	{ MODKEY,			XK_equal,	 spawn,		SHCMD("amixer sset Master 5%+; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
 	{ MODKEY,			XK_BackSpace,	 spawn,		SHCMD("sysact") },
 	{ MODKEY,			XK_w,		 spawn,		SHCMD("$BROWSER") },
 	{ MODKEY,			XK_p,		 spawn,		SHCMD("cmus-remote --pause") },
@@ -108,12 +108,12 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_comma,	 spawn,		SHCMD("cmus-remote --seek 0") },
 	{ MODKEY,			XK_period,	 spawn,		SHCMD("cmus-remote --next") },
 	{ MODKEY|ShiftMask,		XK_period,	 spawn,		SHCMD("cmus-remote --repeat") },
-	{ MODKEY,			XK_a,		 spawn,		SHCMD("$TERMINAL -e pulsemixer; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
+	{ MODKEY,			XK_a,		 spawn,		SHCMD("$TERMINAL -e alsamixer; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
 	{ MODKEY|ShiftMask,		XK_a,		 spawn,		SHCMD("anki") },
 	{ MODKEY,			XK_c,		 spawn,		SHCMD("play-video") },
 	{ MODKEY|ShiftMask,	        XK_c,		 spawn,		SHCMD("ytdl-play-db") },
 	{ MODKEY,			XK_n,		 spawn,		SHCMD("$TERMINAL -e newsboat; /bin/kill -RTMIN+6 `pidof dwmblocks`") },
-	{ MODKEY|ShiftMask,		XK_m,		 spawn,		SHCMD("pamixer -t; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
+	{ MODKEY|ShiftMask,		XK_m,		 spawn,		SHCMD("amixer sset Master toggle; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
 };
 
 /* button definitions */
