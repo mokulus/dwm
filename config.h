@@ -7,11 +7,19 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:size=10", "Noto Color Emoji:pixelsize=10"  };
 static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+
+/* static const char col_gray1[]       = "#222222"; */
+/* static const char col_gray2[]       = "#444444"; */
+/* static const char col_gray3[]       = "#bbbbbb"; */
+/* static const char col_gray4[]       = "#eeeeee"; */
+/* static const char col_cyan[]        = "#005577"; */
+
+static const char col_gray1[]       = "#000000";
+static const char col_gray2[]       = "#666666";
+static const char col_gray3[]       = "#ffffff";
+static const char col_gray4[]       = "#000000";
+static const char col_cyan[]        = "#0dbc79";
+
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -32,7 +40,7 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
@@ -61,7 +69,8 @@ static const char *termcmd[]  = { "/bin/sh", "-c", "$TERMINAL", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_d,      spawn,          SHCMD("rofi -show run") },
+	{ MODKEY|ShiftMask,             XK_d,      spawn,          SHCMD("rofi -show drun") },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -73,6 +82,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_space,  zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
+	{ MODKEY,			XK_f,      togglefullscr,  {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[2]} },
@@ -98,22 +108,24 @@ static Key keys[] = {
 	{ MODKEY,			XK_equal,	 spawn,		SHCMD("amixer sset Master 5%+; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
 	{ MODKEY,			XK_BackSpace,	 spawn,		SHCMD("sysact") },
 	{ MODKEY,			XK_w,		 spawn,		SHCMD("$BROWSER") },
-	{ MODKEY,			XK_p,		 spawn,		SHCMD("cmus-remote --pause") },
-	{ MODKEY|ShiftMask,		XK_p,		 spawn,		SHCMD("cmus-remote --pause-playback; pauseallmpv") },
-	{ MODKEY,			XK_bracketleft,	 spawn,		SHCMD("cmus-remote --seek -10") },
-	{ MODKEY|ShiftMask,		XK_bracketleft,	 spawn,		SHCMD("cmus-remote --seek -60") },
-	{ MODKEY,			XK_bracketright, spawn,		SHCMD("cmus-remote --seek +10") },
-	{ MODKEY|ShiftMask,		XK_bracketright, spawn,		SHCMD("cmus-remote --seek +60") },
-	{ MODKEY,			XK_comma,	 spawn,		SHCMD("cmus-remote --prev") },
-	{ MODKEY|ShiftMask,		XK_comma,	 spawn,		SHCMD("cmus-remote --seek 0") },
-	{ MODKEY,			XK_period,	 spawn,		SHCMD("cmus-remote --next") },
-	{ MODKEY|ShiftMask,		XK_period,	 spawn,		SHCMD("cmus-remote --repeat") },
+	{ MODKEY,			XK_p,		 spawn,		SHCMD("mpc toggle") },
+	{ MODKEY|ShiftMask,		XK_p,		 spawn,		SHCMD("mpc pause; pauseallmpv") },
+	{ MODKEY,			XK_bracketleft,	 spawn,		SHCMD("mpc seek -10") },
+	{ MODKEY|ShiftMask,		XK_bracketleft,	 spawn,		SHCMD("mpc seek -60") },
+	{ MODKEY,			XK_bracketright, spawn,		SHCMD("mpc seek +10") },
+	{ MODKEY|ShiftMask,		XK_bracketright, spawn,		SHCMD("mpc seek +60") },
+	{ MODKEY,			XK_comma,	 spawn,		SHCMD("mpc prev") },
+	{ MODKEY|ShiftMask,		XK_comma,	 spawn,		SHCMD("mpc seek 0") },
+	{ MODKEY,			XK_period,	 spawn,		SHCMD("mpc next") },
+	{ MODKEY|ShiftMask,		XK_period,	 spawn,		SHCMD("mpc repeat") },
 	{ MODKEY,			XK_a,		 spawn,		SHCMD("$TERMINAL -e alsamixer; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
 	{ MODKEY|ShiftMask,		XK_a,		 spawn,		SHCMD("anki") },
 	{ MODKEY,			XK_c,		 spawn,		SHCMD("play-video") },
-	{ MODKEY|ShiftMask,	        XK_c,		 spawn,		SHCMD("ytdl-play-db") },
+	{ MODKEY|ShiftMask,	        XK_c,		 spawn,		SHCMD("read-book") },
 	{ MODKEY,			XK_n,		 spawn,		SHCMD("$TERMINAL -e newsboat; /bin/kill -RTMIN+6 `pidof dwmblocks`") },
+	{ MODKEY,			XK_m,		 spawn,		SHCMD("$TERMINAL -e ncmpcpp") },
 	{ MODKEY|ShiftMask,		XK_m,		 spawn,		SHCMD("amixer sset Master toggle; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
+	{ MODKEY,			XK_e,		 spawn,		SHCMD("emacsclient -c") },
 };
 
 /* button definitions */
