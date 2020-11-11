@@ -108,8 +108,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
         { MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {0} }, /* quit */
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {1} }, /* refresh */
-	{ MODKEY,			XK_minus,	 spawn,		SHCMD("amixer sset Master 5%-; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
-	{ MODKEY,			XK_equal,	 spawn,		SHCMD("amixer sset Master 5%+; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
+	{ MODKEY,			XK_minus,	 spawn,		SHCMD("amixer sset Master 5%-") },
+	{ MODKEY,			XK_equal,	 spawn,		SHCMD("amixer sset Master 5%+") },
 	{ MODKEY,			XK_BackSpace,	 spawn,		SHCMD("sysact") },
 	{ MODKEY,			XK_w,		 spawn,		SHCMD("$BROWSER") },
 	{ MODKEY,			XK_p,		 spawn,		SHCMD("mpc toggle") },
@@ -122,13 +122,13 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_comma,	 spawn,		SHCMD("mpc seek 0") },
 	{ MODKEY,			XK_period,	 spawn,		SHCMD("mpc next") },
 	{ MODKEY|ShiftMask,		XK_period,	 spawn,		SHCMD("mpc repeat") },
-	{ MODKEY,			XK_a,		 spawn,		SHCMD("$TERMINAL -e alsamixer; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
+	{ MODKEY,			XK_a,		 spawn,		SHCMD("$TERMINAL -e alsamixer") },
 	{ MODKEY|ShiftMask,		XK_a,		 spawn,		SHCMD("anki") },
 	{ MODKEY,			XK_c,		 spawn,		SHCMD("play-video") },
 	{ MODKEY|ShiftMask,	        XK_c,		 spawn,		SHCMD("read-book") },
-	{ MODKEY,			XK_n,		 spawn,		SHCMD("$TERMINAL -e newsboat; /bin/kill -RTMIN+6 `pidof dwmblocks`") },
+	{ MODKEY,			XK_n,		 spawn,		SHCMD("$TERMINAL -e newsboat") },
 	{ MODKEY,			XK_m,		 spawn,		SHCMD("$TERMINAL -e ncmpcpp") },
-	{ MODKEY|ShiftMask,		XK_m,		 spawn,		SHCMD("amixer sset Master toggle; /bin/kill -RTMIN+10 `pidof dwmblocks`") },
+	{ MODKEY|ShiftMask,		XK_m,		 spawn,		SHCMD("amixer sset Master toggle") },
 	{ MODKEY,			XK_e,		 spawn,		SHCMD("emacsclient -c") },
 };
 
