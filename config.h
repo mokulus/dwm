@@ -9,22 +9,26 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:pixelsize=14" };
 static const char dmenufont[]       = "monospace:pixelsize=14";
 
-/* static const char col_gray1[]       = "#222222"; */
-/* static const char col_gray2[]       = "#444444"; */
-/* static const char col_gray3[]       = "#bbbbbb"; */
-/* static const char col_gray4[]       = "#eeeeee"; */
-/* static const char col_cyan[]        = "#005577"; */
+/* static const char col_fg[]        = "#ffffff"; */
+/* static const char col_bg[]        = "#000000"; */
+/* static const char col_cyan[]      = "#0dbc79"; */
 
-static const char col_gray1[]       = "#000000";
-static const char col_gray2[]       = "#666666";
-static const char col_gray3[]       = "#ffffff";
-static const char col_gray4[]       = "#000000";
-static const char col_cyan[]        = "#0dbc79";
+/* static const char col_fg[]        = "#D0BFA1"; */
+/* static const char col_bg[]        = "#1C1B19"; */
+/* static const char col_cyan[]      = "#519F50"; */
+
+/* static const char col_fg[]        = "#c5c8c6"; */
+/* static const char col_bg[]        = "#1d1f21"; */
+/* static const char col_cyan[]      = "#b5bd68"; */
+
+static const char col_fg[]        = "#dcdccc";
+static const char col_bg[]        = "#3f3f3f";
+static const char col_cyan[]      = "#7f9f7f";
 
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray1 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { col_fg, col_bg, col_bg },
+	[SchemeSel]  = { col_bg, col_cyan, col_cyan },
 };
 
 /* tagging */
@@ -68,13 +72,14 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_bg, "-nf", col_fg, "-sb", col_cyan, "-sf", col_bg, NULL };
+/* static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL }; */
 static const char *termcmd[]  = { "/bin/sh", "-c", "$TERMINAL", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_d,      spawn,          SHCMD("rofi -show run") },
-	{ MODKEY|ShiftMask,             XK_d,      spawn,          SHCMD("rofi -show drun") },
+	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd} },
+	{ MODKEY|ShiftMask,             XK_d,      spawn,          {.v = dmenucmd} },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
