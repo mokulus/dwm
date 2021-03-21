@@ -6,28 +6,34 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:pixelsize=14" };
-static const char dmenufont[]       = "monospace:pixelsize=14";
+static const char dmenufont[]       = "monospace:size=12";
+static const char *fonts[]          = { dmenufont };
 
-/* static const char col_fg[]        = "#ffffff"; */
-/* static const char col_bg[]        = "#000000"; */
-/* static const char col_cyan[]      = "#0dbc79"; */
+/* vscode */
+static const char col_fg[]        = "#ffffff";
+static const char col_bg[]        = "#000000";
+static const char col_cyan[]      = "#0dbc79";
 
+/* srcery */
 /* static const char col_fg[]        = "#D0BFA1"; */
 /* static const char col_bg[]        = "#1C1B19"; */
 /* static const char col_cyan[]      = "#519F50"; */
 
-/* static const char col_fg[]        = "#c5c8c6"; */
-/* static const char col_bg[]        = "#1d1f21"; */
-/* static const char col_cyan[]      = "#b5bd68"; */
+/* zenburn */
+/* static const char col_fg[]        = "#dcdccc"; */
+/* static const char col_bg[]        = "#3f3f3f"; */
+/* static const char col_cyan[]      = "#7f9f7f"; */
 
-static const char col_fg[]        = "#dcdccc";
-static const char col_bg[]        = "#3f3f3f";
-static const char col_cyan[]      = "#7f9f7f";
+/* tomorrow night */
+/* static const char col_fg[]        = "#c5c8c6"; */
+/* static const char col_bg[]        = "#000000"; */
+/* static const char col_cyan[]      = "#81a2be"; */
+
+static const char col_border[] = "#222222";
 
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_fg, col_bg, col_bg },
+	[SchemeNorm] = { col_fg, col_bg, col_border },
 	[SchemeSel]  = { col_bg, col_cyan, col_cyan },
 };
 
@@ -43,12 +49,13 @@ static const Rule rules[] = {
 	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
 	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "st",      NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "float",   NULL,     NULL,           0,         1,          1,           0,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
 
 /* layout(s) */
-static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
@@ -93,6 +100,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,			XK_f,      togglefullscr,  {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY|ShiftMask,             XK_t,      spawn,          SHCMD("torrent-add") },
 	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
@@ -113,8 +121,10 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
         { MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {0} }, /* quit */
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {1} }, /* refresh */
-	{ MODKEY,			XK_minus,	 spawn,		SHCMD("amixer sset Master 5%-") },
-	{ MODKEY,			XK_equal,	 spawn,		SHCMD("amixer sset Master 5%+") },
+	/* { MODKEY,			XK_minus,	 spawn,		SHCMD("amixer sset Master 5%-") }, */
+	{ MODKEY,			XK_minus,	 spawn,		SHCMD("pulsemixer --change-volume -5") },
+	/* { MODKEY,			XK_equal,	 spawn,		SHCMD("amixer sset Master 5%+") }, */
+	{ MODKEY,			XK_equal,	 spawn,		SHCMD("pulsemixer --change-volume +5") },
 	{ MODKEY,			XK_BackSpace,	 spawn,		SHCMD("sysact") },
 	{ MODKEY,			XK_w,		 spawn,		SHCMD("$BROWSER") },
 	{ MODKEY,			XK_p,		 spawn,		SHCMD("mpc toggle") },
@@ -127,14 +137,18 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_comma,	 spawn,		SHCMD("mpc seek 0") },
 	{ MODKEY,			XK_period,	 spawn,		SHCMD("mpc next") },
 	{ MODKEY|ShiftMask,		XK_period,	 spawn,		SHCMD("mpc repeat") },
-	{ MODKEY,			XK_a,		 spawn,		SHCMD("$TERMINAL -e alsamixer") },
+	/* { MODKEY,			XK_a,		 spawn,		SHCMD("$TERMINAL -e alsamixer") }, */
+	{ MODKEY,			XK_a,		 spawn,		SHCMD("$TERMINAL -e pulsemixer") },
 	{ MODKEY|ShiftMask,		XK_a,		 spawn,		SHCMD("anki") },
-	{ MODKEY,			XK_c,		 spawn,		SHCMD("play-video") },
-	{ MODKEY|ShiftMask,	        XK_c,		 spawn,		SHCMD("read-book") },
-	{ MODKEY,			XK_n,		 spawn,		SHCMD("$TERMINAL -e newsboat") },
+	{ MODKEY,			XK_c,		 spawn,		SHCMD("read-book") },
+	{ MODKEY,			XK_v,		 spawn,		SHCMD("play-video") },
+	/* { MODKEY,			XK_n,		 spawn,		SHCMD("$TERMINAL -e newsboat") }, */
 	{ MODKEY,			XK_m,		 spawn,		SHCMD("$TERMINAL -e ncmpcpp") },
-	{ MODKEY|ShiftMask,		XK_m,		 spawn,		SHCMD("amixer sset Master toggle") },
+	/* { MODKEY|ShiftMask,		XK_m,		 spawn,		SHCMD("amixer sset Master toggle") }, */
+	{ MODKEY|ShiftMask,		XK_m,		 spawn,		SHCMD("pulsemixer --toggle-mute") },
 	{ MODKEY,			XK_e,		 spawn,		SHCMD("emacsclient -c") },
+
+	{ MODKEY,			XK_s,		 spawn,		SHCMD("systemctl suspend") },
 };
 
 /* button definitions */
